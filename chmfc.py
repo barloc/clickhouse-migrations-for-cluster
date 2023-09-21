@@ -4,11 +4,11 @@ import logging
 from clickhouse_driver import Client
 
 from utils.data import Migrations, Migration
-from utils.errors import CHMFCBaseError
+from utils.errors import CHMFCBaseError, CHMFCBadQueryError
 from utils.queries import ClickhouseQueries
 
 # set looger
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)
 logger = logging.getLogger("chmfc")
 
 # get env vars
@@ -62,7 +62,16 @@ def handle_migration(client: Client, version: int, v: Migration):
 
         # else apply all queries in the migration
         for query in v.queries:
-            client.execute(query)
+            try:
+                client.execute(query)
+            except Exception as e:
+                exception_by_lines = str(e).split('\n')
+                reason_ = ''
+                for line in exception_by_lines:
+                    if line.startswith('DB::Exception: '):
+                        reason_ = line.replace('DB::Exception: ', '').replace('Stack trace:', '').strip()
+                        break
+                raise CHMFCBadQueryError(query, reason_)
         # and write migration version to the migrations table
         client.execute(rule_queries.write_migration_to_the_table(version, v.filename, v.checksum))
         logger.info(f'OK - {version} - {v.filename} - {v.checksum}')

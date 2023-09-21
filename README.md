@@ -31,6 +31,8 @@ Only via envs.
 
 ## Local development
 
+You need: docker, make, python >3.11.
+
 ### Install environment:
 
 Install `venv`:

@@ -15,12 +15,14 @@ dev_env_down: env_down
 
 .PHONY: linter
 linter:
+	docker-compose -f test-dockerfiles/docker-compose.ci.yml rm -f
 	docker compose -f test-dockerfiles/docker-compose.linter.yml down
-	docker compose -f test-dockerfiles/docker-compose.linter.yml up --build
+	docker compose -f test-dockerfiles/docker-compose.linter.yml up --build --force-recreate
 	docker compose -f test-dockerfiles/docker-compose.linter.yml down
 
 .PHONY: ci
 ci:
+	docker-compose -f test-dockerfiles/docker-compose.ci.yml rm -f
 	docker compose -f test-dockerfiles/docker-compose.ci.yml down
 	docker compose -f test-dockerfiles/docker-compose.ci.yml up --build chmfc
 	docker compose -f test-dockerfiles/docker-compose.ci.yml down
