@@ -1,0 +1,5 @@
+[flake8]
+max-line-length = 110
+ignore = E501
+exclude = .svn,CVS,.bzr,.hg,.git,__pycache__,.eggs,*.egg,node_modules,*pa/strategy/report*
+max-complexity = 19

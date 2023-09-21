@@ -1,0 +1,7 @@
+FROM alpine/flake8:6.0.0
+
+RUN pip install flake8-bugbear pep8-naming flake8-builtins
+
+COPY utils /apps/
+COPY chmfc.py /apps/
+COPY .flake8 /apps/
