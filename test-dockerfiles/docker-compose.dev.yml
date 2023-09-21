@@ -1,0 +1,12 @@
+version: '2.4'
+
+services:
+
+  clickhouse:
+    ports:
+      - 8123:8123
+      - 9000:9000
+
+networks:
+  default:
+    name: test

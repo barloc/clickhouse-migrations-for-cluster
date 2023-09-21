@@ -1,0 +1,10 @@
+version: '2.4'
+
+services:
+
+  chmfc-linter:
+    build:
+      context: ../
+      dockerfile: test-dockerfiles/Dockerfile.linter
+    container_name: chmfc_linter
+    command: /apps
