@@ -8,7 +8,7 @@ from utils.errors import CHMFCBaseError, CHMFCBadQueryError
 from utils.queries import ClickhouseQueries
 
 # set looger
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger("chmfc")
 
 # get env vars
