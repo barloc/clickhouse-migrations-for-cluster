@@ -26,3 +26,8 @@ ci:
 	docker compose -f test-dockerfiles/docker-compose.ci.yml down
 	docker compose -f test-dockerfiles/docker-compose.ci.yml up --build chmfc
 	docker compose -f test-dockerfiles/docker-compose.ci.yml down
+
+	docker-compose -f test-dockerfiles/docker-compose.ci.23.8.yml rm -f
+	docker compose -f test-dockerfiles/docker-compose.ci.23.8.yml down
+	docker compose -f test-dockerfiles/docker-compose.ci.23.8.yml up --build chmfc
+	docker compose -f test-dockerfiles/docker-compose.ci.23.8.yml down

@@ -2,6 +2,26 @@ version: '2.4'
 
 services:
 
+  chmfc:
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    container_name: chmfc
+    environment:
+      CHMFC_CH_HOST: clickhouse
+      CHMFC_CH_LOGIN: test
+      CHMFC_CH_PASSWORD: test
+      CHMFC_CH_DATABASE: default
+      CHMFC_MIG_PATH: /migrations
+      CHMFC_MIG_TABLE: default.migrations
+    volumes:
+      - ../test-migrations:/migrations
+    depends_on:
+      clickhouse:
+        condition: service_healthy
+      clickhouse1:
+        condition: service_healthy
+
   clickhouse:
     image: clickhouse/clickhouse-server:23.8
     container_name: test_clickhouse

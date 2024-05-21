@@ -5,7 +5,7 @@ class ClickhouseQueries:
         self.table = migrations_table.split('.')[1]
 
     def exists_migrations_table(self):
-        return f'select version from {self.migrations_table} limit 1'
+        return f"select uuid from system.tables where database = '{self.schema}' and name = '{self.table}'"
 
     def create_migrations_table(self):
         create_shards_query = '''
