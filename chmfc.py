@@ -25,22 +25,15 @@ rule_queries = ClickhouseQueries(migrations_table=migrations_table)
 
 def check_or_create_migrations_table(client: Client):
     # check migrations table and create it if needs
-    exists = True
-    try:
-        ch_client.execute(rule_queries.exists_migrations_table())
-    except Exception as e:
-        if f"Table {migrations_table} doesn't exist" in str(e):
-            create_shards, create_distributed = rule_queries.create_migrations_table()
-            ch_client.execute(create_shards)
-            ch_client.execute(create_distributed)
-
-            exists = False
-            logger.info(f"Table {migrations_table} has been created.")
-        else:
-            raise CHMFCBaseError(e)
-
-    if exists:
+    migrations_tables_exists = ch_client.execute(rule_queries.exists_migrations_table())
+    if migrations_tables_exists:
         logger.info(f"Table {migrations_table} exists.")
+    else:
+        create_shards, create_distributed = rule_queries.create_migrations_table()
+        ch_client.execute(create_shards)
+        ch_client.execute(create_distributed)
+
+        logger.info(f"Table {migrations_table} has been created.")
 
 
 def handle_migration(client: Client, version: int, v: Migration):
